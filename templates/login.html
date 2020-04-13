@@ -2,37 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for ('static', filename='css/style_login.css') }}" >
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/sty.css">
     <title>Document</title>
 </head>
 <body>
-    
     <div align="center" id="formContent">
         
             <!-- Login Form -->
             <h5 style="margin-top: 100px;">เข้าสู่ระบบ</h5>
             <hr>
             <form>
-            <span class="border" style="width: fit-content;">
+            <!-- <span class="border" style="width: fit-content;"> -->
                 <div class="inputarea">
-                    <input type="text" id="login" class="inputarea" name="login" placeholder="login">
+                    <input type="text"  placeholder="login">
                 </div>
 
                 <div class="inputarea">
-                    <input type="text" id="password" class="inputarea" name="login" placeholder="password" style="margin-top: 10px;" >
+                    <input type="text"  placeholder="password" style="margin-top: 10px;" >
                 </div>
 
                 <div class="inputarea">
                     <input type="submit" class="btn btn-secondary btn-sm" value="Log In" style="margin-top: 20px;">
                 </div>
-            </span>
+            <!-- </span> -->
             </form>
       
     </div>
-
 </body>
 </html>
