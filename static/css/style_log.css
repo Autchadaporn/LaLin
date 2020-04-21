@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #eee;
+    background-color: rgb(141, 21, 240);
     height: 100vh;
   }
   #login .container #login-row #login-column #login-box {
