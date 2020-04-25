@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+  <form action ="/search" method="POST">
+        
+    <select name="Topic">
+        <option value="1">เปิดเทอม</option>
+        <option value="2">สอบกลางภาค</option>
+        <option value="3">สอบกลางภาค</option>
+        <option value="4">ปิดเทอม</option>
+    </select>
+    <select name="Term">
+        <option value="1">เทอม1</option>
+        <option value="2">เทอม2</option>
+        <option value="3">เทอม3</option>
+    </select>
+    
+    <input type="submit" >
+  </form>
+
+    <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>กิจกรรม</th>
+            <th>เทอม</th>
+            <th>วันที่เริ่ม</th>
+            <th>วันที่สิ้นสุด</th>
+            <th>ปีการศึกษา</th>
+            <th>กิจกรรม</th>
+            <th>ชื่อกิจกรรม</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in datas %}
+          <tr>
+            <td>{{row.Topic_ID}}</td>
+            <td>{{row.Term}}</td>
+            <td>{{row.Start_Date}}</td>
+            <td>{{row.Finish_Date}}</td>
+            <td>{{row.Year}}</td>
+            <td>{{row.Topic_ID}}</td>
+            <td>{{row.Topic}}</td>
+            
+          </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+      
+</body>
+</html>
