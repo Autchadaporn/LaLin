@@ -35,20 +35,17 @@
             <th>วันที่เริ่ม</th>
             <th>วันที่สิ้นสุด</th>
             <th>ปีการศึกษา</th>
-            <th>กิจกรรม</th>
-            <th>ชื่อกิจกรรม</th>
           </tr>
         </thead>
         <tbody>
           {% for row in datas %}
           <tr>
-            <td>{{row.Topic_ID}}</td>
+            <td>{{row.Topic}}</td>
             <td>{{row.Term}}</td>
             <td>{{row.Start_Date}}</td>
             <td>{{row.Finish_Date}}</td>
             <td>{{row.Year}}</td>
-            <td>{{row.Topic_ID}}</td>
-            <td>{{row.Topic}}</td>
+            
             
           </tr>
             {% endfor %}

@@ -25,8 +25,7 @@ def test():
 @app.route("/calendar")
 def calendar(): 
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM calendar")
-        # cur.execute("SELECT * FROM topic")
+        cur.execute("SELECT topic.Topic, calendar.Term, calendar.Start_Date, calendar.Finish_Date, calendar.Year FROM topic INNER JOIN calendar ON topic.Topic_ID = calendar.Topic_ID  ")
         rows=cur.fetchall()
         return render_template('calendar.html',datas=rows)
 
