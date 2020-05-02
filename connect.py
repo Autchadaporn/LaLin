@@ -22,6 +22,7 @@ def login():
 def test():
     return render_template('test.html') 
 
+# แสดงปฏิทิน
 @app.route("/calendar")
 def calendar(): 
         cur = mysql.connection.cursor()
@@ -33,7 +34,7 @@ def calendar():
 def formsearch():
     return render_template('formsearch.html')
 
-
+# ค้นหา
 @app.route("/search" ,methods=['GET', 'POST'])
 def search():
     topic =  request.form['Topic']
@@ -45,6 +46,7 @@ def search():
     rows=cur.fetchall()
     return render_template('search.html',datas = rows)
 
+# เพิ่มวดป ปฏิทินการศึกษา
 @app.route("/addcalendar", methods=['POST','GET'])
 def addcalendar():
     cur = mysql.connection.cursor()
@@ -60,12 +62,13 @@ def addcalendar():
     mysql.connection.commit()
     return render_template('addcalendar.html',datas=rows)
 
+
+# เพิ่มกิจกรรม
 @app.route("/addtopic")
 def addtopic():
     return render_template('addtopic.html')
-
 @app.route("/inserttopic",methods=["POST"])
-def insert():
+def inserttopic():
     topicid = request.form['TopicID']
     topic = request.form['Topic']
     # print(topicid,topic)
@@ -76,7 +79,14 @@ def insert():
     mysql.connection.commit()
     return render_template('addtopic.html')
 
-
+#ลบแถว
+@app.route("/delete/<string:id_topic>/<string:term>",methods=["POST","GET"])
+def delete(id_topic,term):
+    print(id_topic,term)
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM calendar WHERE Topic_ID='"+id_topic+"'AND Term='"+term+"'")
+    mysql.connection.commit()
+    return redirect(url_for('calendar'))
     
     
 app.run(debug=True)
