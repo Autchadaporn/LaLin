@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <title>Document</title>
+    <title>Calendar</title>
 </head>
 <body>
 
@@ -30,27 +30,34 @@
     <table class="table table-bordered">
         <thead>
           <tr>
+            <th>รหัสกิจกรรม</th>
             <th>กิจกรรม</th>
             <th>เทอม</th>
             <th>วันที่เริ่ม</th>
             <th>วันที่สิ้นสุด</th>
             <th>ปีการศึกษา</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {% for row in datas %}
           <tr>
+            <td>{{row.Topic_ID}}</td>
             <td>{{row.Topic}}</td>
             <td>{{row.Term}}</td>
             <td>{{row.Start_Date}}</td>
             <td>{{row.Finish_Date}}</td>
             <td>{{row.Year}}</td>
+            <td>
+              <a href="" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Edit</a>
+              <a href="/delete/{{ row.Topic}}" class="btn btn-danger btn-xs" onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่?')">Delete</a>
+            </td>
             
             
           </tr>
             {% endfor %}
         </tbody>
       </table>
-      
+      <input type="submit" value="เพิ่ม">
 </body>
 </html>
