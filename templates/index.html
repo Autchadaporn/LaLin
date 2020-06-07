@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>คำนวนเกรด</title>
+</head>
+<body>
+    <div align="center">
+    <h2>ฟอร์มคำนวณเกรด</h2>
+    <form action="/calculate" method="POST">
+    
+        <table class="table table-bordered" >
+            <tr>
+                <th>รหัสแถว</th>
+                <th>รหัสวิชา</th>
+                <th>ชื่อวิชา</th>
+                <th>หน่วยกิต</th>
+                <th>เกรดที่คาดว่าจะได้</th>
+            </tr>
+    {% for row in datas %} <!--datas ที่รับค่ามาจาก index() -->                
+            <tr>
+                <td>{{row.Rows_id}}</td>
+                <td><input name="Subject[]" value="{{row.Subject_ID}}" readonly></td>
+                <td>{{row.Name_TH}}</td>
+                <td><input name="Unit[]" value="{{row.Unit}}" readonly></td>
+                <td><select name="Grade[]" id="">
+                    <option value="4.0">A</option>
+                    <option value="3.5">B+</option>
+                    <option value="3.0">B</option>
+                    <option value="2.5">C+</option>
+                    <option value="2.0">C</option>
+                    <option value="1.5">D+</option>
+                    <option value="1.0">D</option>
+                    <option value="0.0">F</option>
+                    <option value="W">W</option>
+                </select></td>
+            </tr>
+    {% endfor %}    
+        </table>
+        <!-- <label>หน่วยกิตรวม</label><input type="text" value="{{sum}}"><br> -->
+        <input type="submit" class="btn default">
+        <input type="text" name=""value="{{item}}" readonly>
+        <!-- <input type="text" name=""value="" readonly> -->
+    
+    </form> 
+    </div>  
+</body>
+</html>

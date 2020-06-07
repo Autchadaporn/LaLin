@@ -12,19 +12,25 @@
     <div align="center">
     <h2>เพิ่มปฏิทินการศึกษา</h2>
     <form action="/addcalendar" method="POST">
-    <select name="Topic">
+    <select name="Topic_ID">
             {% for row in datas %}
           <option value="{{row.Topic_ID}}">{{row.Topic}}</option>
             {% endfor %}
     </select>
-    
-    
     <a class="dropdown-item" href="/addtopic">เพิ่มกิจกรรม</a>
-    วันเริ่มกิจกรรม <input type="date" name="SDate"> <br>
-    วันสิ้นสุดกิจกรรม <input type="date" name="FDate"><br>
-    เทอม <input type="text" name="Term"><br>
-    ปีการศึกษา <input type="text" name="Year">
-    <input type="submit" value="บันทึก">
+    วันเริ่มกิจกรรม <input type="date" name="Start_Date"> <br>
+    วันสิ้นสุดกิจกรรม <input type="date" name="Finish_Date"><br>
+    ภาคเรียน<select name="Term">
+            
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select><br>
+    <!-- เทอม <input type="text" name="Term"><br> -->
+    ปีการศึกษา <input type="text" name="Year"><br>
+    
+    <a href="/calendar" class="btn btn-success">ยกเลิก</a>
+    <input type="submit" class="btn btn-warning" value="บันทึก">
     </form>
     </div>
 </body>
