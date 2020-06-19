@@ -1,0 +1,13 @@
+ body {
+     background-color:whitesmoke;
+ }
+ h2 {
+    text-align: center;    
+    color:black;
+    
+  }
+  div {
+    border: 1px solid gray;
+    padding: 8px;
+  }
+  

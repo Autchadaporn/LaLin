@@ -3,11 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>คำนวณเกรด</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>คำนวนเกรด</title>
 </head>
 <body>
     <div align="center">
-    วิชา1<input type="text">
-    </div>
+    <h2>ฟอร์มคำนวณเกรด</h2>
+    <form action="/calculate" method="POST">
+    
+        <table class="table table-bordered" >
+            <tr>
+                <th>รหัสแถว</th>
+                <th>รหัสวิชา</th>
+                <th>ชื่อวิชา</th>
+                <th>หน่วยกิต</th>
+                <th>เกรดที่คาดว่าจะได้</th>
+            </tr>
+    
+    {% for row in  datas %} <!--datas ที่รับค่ามาจาก index() -->                
+            <tr>
+                <td>{{row.Rows_id}}</td>
+                <td><input name="Subject_ID[]" value="{{row.Subject_ID}}" readonly></td>
+                <td>{{row.Name_TH}}</td>
+                <td><input name="Unit[]" value="{{row.Unit}}" readonly></td>
+               
+                <td><select name="Grade[]" id="">
+                    <!-- {%for i in Grade %}                         -->
+                            <option value="4.0"  {%if row.Grade == '4.0' %} selected {% endif %}>A</option>
+                            <option value="3.5"  {%if row.Grade == '3.5' %} selected {% endif %}>B+</option>
+                            <option value="3.0"  {%if row.Grade == '3.0' %} selected {% endif %}>B</option>
+                            <option value="2.5"  {%if row.Grade == '2.5' %} selected {% endif %}>C+</option>
+                            <option value="2.0"  {%if row.Grade == '2.0' %} selected {% endif %}>C</option>
+                            <option value="1.5"  {%if row.Grade == '1.5' %} selected {% endif %}>D+</option>
+                            <option value="1.0"  {%if row.Grade == '1.0' %} selected {% endif %}>D</option>
+                            <option value="0.0"  {%if row.Grade == '0.0' %} selected {% endif %}>F</option>
+                            <option value="-1.0" {%if row.Grade == '-1.0' %} selected {% endif %}>W</option>
+                           
+                    <!-- {% endfor %} -->
+                    
+                    <!-- <option value="4.0"{%for i in Grade %} {% if i == '4.0' %} selected {% endif %} {% endfor %}>A</option>
+                    <option value="3.5" {%for i in Grade %} {% if i == '3.5' %} selected {% endif %} {% endfor %}>B+</option>
+                    <option value="3.0" {%for i in Grade %} {% if i == '3.0' %} selected {% endif %}{% endfor %}>B</option>
+                    <option value="2.5" {%for i in Grade %} {% if i == '2.5' %} selected {% endif %}{% endfor %}>C+</option>
+                    <option value="2.0" {%for i in Grade %} {% if i == '2.0' %} selected {% endif %}{% endfor %}>C</option>
+                    <option value="1.5" {%for i in Grade %} {% if i == '1.5' %} selected {% endif %}{% endfor %}>D+</option>
+                    <option value="1.0" {%for i in Grade %} {% if i == '1.0' %} selected {% endif %}{% endfor %}>D</option>
+                    <option value="0.0" {%for i in Grade %} {% if i == '0.0' %} selected {% endif %}{% endfor %}>F</option>
+                    <option value="-1.0" {%for i in Grade %} {% if i == '-1.0' %} selected {% endif %}{% endfor %}>W</option> -->
+                    
+                   
+            </select></td>
+            </tr>
+    {% endfor %}    
+        </table>
+        <!-- <label>หน่วยกิตรวม</label><input type="text" value="{{sum}}"><br> -->
+        <input type="submit" class="btn default">
+        <input type="text" name=""value="{{item}}" readonly>
+        <input type="text" name=""value="{{Grade}}" readonly>
+        <!-- <input type="text" name=""value="" readonly> -->
+    
+    </form> 
+    </div>  
 </body>
 </html>

@@ -12,6 +12,7 @@
   <div class="container">
   <!-- เริ่มค้นหาข้อมูล -->
   <form action ="/search" method="POST">
+    <label>ค้นหา</label>
     <select name="Topic">
         <option value="1">เปิดเทอม</option>
         <option value="2">สอบกลางภาค</option>
@@ -23,7 +24,7 @@
         <option value="2">เทอม2</option>
         <option value="3">เทอม3</option>
     </select>
-    <input type="submit" >
+    <input type="submit" class="btn btn-secondary btn-sm">
   </form>
   <!-- จบการค้นหาข้อมูล -->
     <table class="table table-bordered">
@@ -56,7 +57,7 @@
               <a href="/delete/{{row.id}}" class="btn btn-danger btn-xs" onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่?')">Delete</a>
             </td>
           </tr>
-
+<!-- -----------------------อัพเดทข้อมูล------------------------------------------------ -->
           <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -65,24 +66,26 @@
                   <h4 class="modal-title">อัพเดทข้อมูล</h4>
                 </div>
                 <div class="modal-body">
-                  <form action="/update" method="POST">
+
+                <form action="/update" method="POST">
                     <div class="form-group">
       <!--id ที่จะแก้ --><input type="text" name="id" value="{{row.id}}" readonly> <!--ดูค่าเพื่อdebug -->
-                      <input type="text"  value="{{row.Topic}}" readonly>
+                      <label>ชื่อกิจกรรม : {{row.Topic}}</label> 
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <select name="Topic_ID" >
                         {% for row in datas %}
                         <option value="{{row.Topic_ID}}">{{row.Topic}}</option>
                         {% endfor %}
                       </select>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                       วันเริ่มกิจกรรม <input type="date" name="Start_Date" value="{{row.Start_Date}}">
                     </div>
                     <div class="form-group">
                       วันสิ้นสุดกิจกรรม <input type="date" name="Finish_Date" value="{{row.Finish_Date}}">
                     </div>
+                    
                     <div class="form-group">
                       ภาคเรียน<select name="Term">
                               <option value="1">1</option>
@@ -95,6 +98,7 @@
                     </div>
                     <div class="form-group">
                       <button class="btn btn-primary" type="submit">อัพเดท</button>
+                      <input type="reset">
                     </div>
                 </form>
               </div>

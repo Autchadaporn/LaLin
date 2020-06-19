@@ -13,14 +13,15 @@
             <th>วันที่สิ้นสุด</th>
           </tr>
         </thead>
-        <tbody>
+    
     {% for row in datas %}
           <tr>  
             <td>{{row.Start_Date}}</td>
-            <td>{{row.Finish_Date}}</td>
-            
+            <td>{{row.Finish_Date}}</td>            
           </tr>
-            {% endfor %}
+    {% endfor %}      
+    </table>
+    <a href="/calendar">กลับ</a>
 </body>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for, session,flash, jsonify
+from flask import Flask, render_template, redirect, request, url_for, session,flash, jsonify,json
 from flask_mysqldb import MySQL, MySQLdb
 from sqlalchemy import text
 import bcrypt
@@ -14,10 +14,35 @@ app.config['MYSQL_CURSORCLASS']='DictCursor'
 # Stop connect
 mysql = MySQL(app)
 
+# ----------------start login -------------#
 @app.route("/login")
 def login():
     return render_template('login.html')
 
+@app.route("/checklogin",methods=['GET', 'POST'])
+def checklogin():
+    if request.method == 'POST':
+        Student_ID = request.form['Student_ID']
+        # print (Student_ID)
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT Student_Name,Student_Lastname FROM student WHERE Student_ID = '"+Student_ID+"'")
+        NameStudent =cur.fetchall()
+    return render_template('hello.html',Name=NameStudent,Student_ID=Student_ID)
+
+
+# ----------------stop login -------------#
+
+# ---------------- ดูข้อมูลการศึกษา -------------#
+@app.route("/inforstudy",methods=['GET', 'POST'])
+def inforstudy():
+    if request.method == 'POST':
+        Student_ID = request.form['Student_ID']
+        # print (Student_ID)
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT  Subject_ID,Subject_TH, Unit, Grade FROM informationstudy WHERE Student_ID = '"+Student_ID+"'")
+        Subject =cur.fetchall()
+    return render_template('inforstudy.html',Subject=Subject)
+# ---------------- ดูข้อมูลการศึกษา -------------#
 @app.route("/test")
 def test():
     return render_template('test.html') 
@@ -44,7 +69,7 @@ def search():
     Term =  request.form['Term']
     # print(Topic,Term)
     cur = mysql.connection.cursor() #เชื่อมdatabase
-    cur.execute("SELECT Start_Date,Finish_Date FROM calendar WHERE Topic_ID = '"+topic+"' AND Term = '"+term+"'")
+    cur.execute("SELECT Start_Date,Finish_Date FROM calendar WHERE Topic_ID = '"+Topic+"' AND Term = '"+Term+"'")
     rows=cur.fetchall() #แสดงข้อมูลทั้งหมด
     return render_template('search.html',datas = rows)
 
@@ -63,7 +88,7 @@ def addcalendar():
     if request.method == 'POST': #เช็คว่าส่งmethod POST มาหรือไม่ ถ้าใช่ให้ทำในเงื่อนไข
         
         Topic_ID = request.form['Topic_ID']
-        # Topicid = request.form.get('Topic')
+        # Topicid = request.form.get('Topic') # เขียนแบบ method GET
         Start_Date = request.form['Start_Date']
         Finish_Date = request.form['Finish_Date']
         Term = request.form['Term']
@@ -100,30 +125,29 @@ def delete(id):
     return redirect(url_for('calendar'))
 
 #อัพเดทข้อมูล
-# @app.route("/showform")
-# def showform():
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM topic")
-#     rows=cur.fetchall()
-#     return render_template('addcalendar.html',datas = rows)
-# @app.route("/update", methods=['POST','GET'])
-# def update():
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM topic")
-#     rows=cur.fetchall()
-#     if request.method == 'POST': #เช็คว่าส่งmethod POST มาหรือไม่ ถ้าใช่ให้ทำในเงื่อนไข
-#         id = request.form['id'] #รับค่าไอดีมา จากหน้าupdateจะได้รู้ว่าจะแก้ไขแถวไหน
-#         Topic_ID = request.form['Topic_ID']
-#         # Topicid = request.form.get('Topic')
-#         Start_Date = request.form['Start_Date']
-#         Finish_Date = request.form['Finish_Date']
-#         Term = request.form['Term']
-#         Year = request.form['Year']
-#         print("id"+id,'Topic_ID'+Topic_ID,'Start_Date'+ Start_Date,Finish_Date,Term,Year)
-#         cur.execute("UPDATE calendar SET Topic_ID=%s, Term=%s, Start_Date=%s, Finish_Date=%s, Year=%s WHERE id='"+id+"' " ,(Topic_ID,Term,Start_Date,Finish_Date,Year,id) )
+@app.route("/update", methods=['POST','GET'])
+def update():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM topic")
+    rows=cur.fetchall()
+    if request.method == 'POST': #เช็คว่าส่งmethod POST มาหรือไม่ ถ้าใช่ให้ทำในเงื่อนไข
+        # Finish_Date = 'null'
+        id = request.form['id'] #รับค่าไอดีมา จากหน้าupdateจะได้รู้ว่าจะแก้ไขแถวไหน
+
+        Start_Date = request.form['Start_Date']
+        Finish_Date = "null"
         
-#         mysql.connection.commit()
-#     return redirect(url_for('calendar'))
+        if request.form['Finish_Date'] is not "" :
+            Finish_Date = request.form['Finish_Date']
+        
+        Term = request.form['Term']
+        Year = request.form['Year']
+        print("id:",id,'Start_Date: ',Start_Date,'Finish_Date: ',Finish_Date,'Term: ',Term,'Year',Year)
+        cur.execute("UPDATE calendar SET  Term="+Term+",Start_Date= '"+Start_Date+"', Finish_Date= '"+Finish_Date+"', Year= '"+Year+"' WHERE id= "+id+" " )
+        print("UPDATE calendar SET  Term="+Term+",Start_Date="+Start_Date+", Finish_Date="+Finish_Date+", Year= '"+Year+"' WHERE id= "+id+" " )
+        # print(cur)
+        mysql.connection.commit()
+    return redirect(url_for('calendar'))
 # ---------------------------ปฏิทินการศึกษา----------------------------------------------------
 
 
@@ -135,36 +159,80 @@ def index():
     cur.execute('SELECT * FROM gpa')
     rows=cur.fetchall()
     
+
     return render_template("index.html",datas=rows) #นำ datas ไปแสดงผลที่หน้า html
 
 @app.route("/calculate",methods=['POST','GET']) #รับค่ามาจาก form index.html
 def calculate():
-    cur=mysql.connection.cursor()
-    cur.execute('SELECT * FROM gpa')
-    rows=cur.fetchall()
-    # for row in rows :
-    #     print(row)
- 
-    Subject = request.form.getlist("Subject[]") #รับค่าเป็น list จากform index.html
-    Unit = request.form.getlist("Unit[]")
-    Grade = request.form.getlist("Grade[]")
 
-    # ---------------------- start  ส่งค่าแล้วprintออกมาเป็นjson -------------------------
-    # headers = ('Subject', 'Unit', 'Grade')
-    # values = (
-    #     request.form.getlist('Subject[]'),  
-    #     request.form.getlist('Unit[]'),  
-    #     request.form.getlist('Grade[]'),         
-    # )
-    # items = [{} for i in range(len(values[0]))]
-    # for x,i in enumerate(values):  #enumerate เป็นคำสั่งสำหรับแจกแจงค่า index และข้อมูลใน index ในรูปแบบทูเพิล (Tuple) ดังนี้ (Index,Value) โดยต้องใช้กับข้อมูลชนิด list
-    #     for _x,_i in enumerate(i): 
-    #         items[_x][headers[x]] = _i
-    # return jsonify(items)
+    if request.method == 'POST':
+        Rows_id = request.form.getlist("Rows_id[]")
+        Subject_ID = request.form.getlist("Subject_ID[]")
+        Name_TH = request.form.getlist("Name_TH[]") #รับค่าเป็น list จากform index.html
+        Unit = request.form.getlist("Unit[]")
+        Grade = request.form.getlist("Grade[]")
+     # ---------------------- start  ส่งค่าแล้วprintออกมาเป็นjson -------------------------
+    headers = ('Rows_id','Subject_ID','Name_TH', 'Unit', 'Grade')
+    values = (
+        request.form.getlist("Rows_id[]"),
+        request.form.getlist('Subject_ID[]'), 
+        request.form.getlist("Name_TH[]") ,
+        request.form.getlist('Unit[]'),  
+        request.form.getlist('Grade[]'),         
+    )
+    items = [{} for i in range(len(values[0]))]
+    for x,i in enumerate(values):  #enumerate เป็นคำสั่งสำหรับแจกแจงค่า index และข้อมูลใน index ในรูปแบบทูเพิล (Tuple) ดังนี้ (Index,Value) โดยต้องใช้กับข้อมูลชนิด list
+        for _x,_i in enumerate(i): 
+            items[_x][headers[x]] = _i
+    result = jsonify(items)
+    print("---------------------------------------------------")
+    print(result)
+    print(items)
+    
+    # rows = json.dumps(items)
+    rows=items
+    print(rows)
+    print("---------------------------------------------------")
     # -------------------- stop  ส่งค่าแล้วprintออกมาเป็นjson-----------------------
 
+#     rows = [
+#   {
+#     "Grade": "3.0", 
+#     "Name_TH": "\u0e01\u0e32\u0e23\u0e40\u0e02\u0e35\u0e22\u0e19\u0e42\u0e1b\u0e23\u0e41\u0e01\u0e23\u0e21\u0e40\u0e0a\u0e34\u0e07\u0e42\u0e04\u0e23\u0e07\u0e2a\u0e23\u0e49\u0e32\u0e07", 
+#     "Rows_id": "1", 
+#     "Subject": "0", 
+#     "Unit": "3"
+#   }, 
+#   {
+#     "Grade": "2.0", 
+#     "Name_TH": "\u0e2a\u0e16\u0e32\u0e1b\u0e31\u0e15\u0e22\u0e01\u0e23\u0e23\u0e21\u0e04\u0e2d\u0e21\u0e1e\u0e34\u0e27\u0e40\u0e15\u0e2d\u0e23\u0e4c", 
+#     "Rows_id": "2", 
+#     "Subject": "225434", 
+#     "Unit": "4"
+#   }, 
+#   {
+#     "Grade": "1.0", 
+#     "Name_TH": "\u0e15\u0e23\u0e23\u0e01\u0e30\u0e1e\u0e37\u0e49\u0e19\u0e10\u0e32\u0e19\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e41\u0e01\u0e49\u0e1b\u0e31\u0e0d\u0e2b\u0e32", 
+#     "Rows_id": "3", 
+#     "Subject": "225101", 
+#     "Unit": "5"
+#   }, 
+#   {
+#     "Grade": "0.0", 
+#     "Name_TH": "\u0e04\u0e13\u0e34\u0e15\u0e28\u0e32\u0e2a\u0e15\u0e23\u0e4c\u0e40\u0e15\u0e47\u0e21\u0e2b\u0e19\u0e48\u0e27\u0e22", 
+#     "Rows_id": "4", 
+#     "Subject": "241334", 
+#     "Unit": "2"
+#   }
+# ]
+
+
+    
+
+   
+
     print("***********************************************************************")
-    print('วิชา:',Subject)
+    print('วิชา:',Subject_ID)
     print('หน่วยกิต:',Unit)
     print('เกรด:',Grade)
     print("***********************************************************************")
@@ -172,7 +240,7 @@ def calculate():
     #------------------------- start เช็ค W ---------------------------
     for i in range(len(Grade)): #วนลูปเช็คว่ามี W ไหม
         # print(Grade[i])
-        if Grade[i] == 'W':
+        if Grade[i] == '-1.0':
             Grade[i] = 0
             for x in range(len(Unit)): #วนหาหน่วยกิตที่ติด W
                 if x == i:
@@ -180,9 +248,8 @@ def calculate():
                     
         else :
              print(Grade[i]) #เกรดที่นำมาคิด
-
     print("***********************************************************************")
-    print('วิชา:',Subject)
+    print('วิชา:',Subject_ID)
     print('หน่วยกิต:',Unit)
     print('เกรด:',Grade)
     print("***********************************************************************")
@@ -209,8 +276,28 @@ def calculate():
     GPA = total / sum
     GPA = '%.2f'%(GPA) # ตัดทศนิยมให้เหลือ 2 ตำแหน่ง เช่น 2.9642857142857144 เป็น 2.96
     print(GPA)
-    
-    return render_template("index.html",datas=rows,item=GPA,sum=sum)
+    print(Grade)
+    for i in Grade:
+        print(i)
+        # if i == '4.0':
+        #     print ('A')
+        # if i == '3.5':
+        #     print ('B+')
+        # if i == '3.0':
+        #     print ('B')
+        # if i == '2.5':
+        #     print ('C+')
+        # if i == '2.0':
+        #     print ('C')
+        # if i == '1.5':
+        #     print('D+')
+        # if i == '1.0':
+        #     print('D')
+        # if i == '0.0':
+        #     print('F')
+
+    return render_template("calculate.html",datas=rows,item=GPA,Grade=Grade)
+    # return redirect(url_for('index',item=GPA,Grade=Grade))
     # return render_template("index.html",datas=rows)
     
     
