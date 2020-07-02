@@ -15,7 +15,7 @@
     
         <table class="table table-bordered" >
             <tr>
-                <th>รหัสแถว</th>
+                <th hidden>รหัสแถว</th>
                 <th>รหัสวิชา</th>
                 <th>ชื่อวิชา</th>
                 <th>หน่วยกิต</th>
@@ -24,13 +24,13 @@
     
     {% for row in  datas %} <!--datas ที่รับค่ามาจาก index() -->                
             <tr>
-                <td>{{row.Rows_id}}</td>
+                <td hidden><input name="Rows_id[]" value="{{row.Rows_id}}" readonly></td>
                 <td><input name="Subject_ID[]" value="{{row.Subject_ID}}" readonly></td>
-                <td>{{row.Name_TH}}</td>
+                <td><input name="Name_TH[]" value="{{row.Name_TH}}" readonly></td>
                 <td><input name="Unit[]" value="{{row.Unit}}" readonly></td>
                
                 <td><select name="Grade[]" id="">
-                    <!-- {%for i in Grade %}                         -->
+                    
                             <option value="4.0"  {%if row.Grade == '4.0' %} selected {% endif %}>A</option>
                             <option value="3.5"  {%if row.Grade == '3.5' %} selected {% endif %}>B+</option>
                             <option value="3.0"  {%if row.Grade == '3.0' %} selected {% endif %}>B</option>
@@ -41,7 +41,7 @@
                             <option value="0.0"  {%if row.Grade == '0.0' %} selected {% endif %}>F</option>
                             <option value="-1.0" {%if row.Grade == '-1.0' %} selected {% endif %}>W</option>
                            
-                    <!-- {% endfor %} -->
+                    
                     
                     <!-- <option value="4.0"{%for i in Grade %} {% if i == '4.0' %} selected {% endif %} {% endfor %}>A</option>
                     <option value="3.5" {%for i in Grade %} {% if i == '3.5' %} selected {% endif %} {% endfor %}>B+</option>
@@ -61,7 +61,7 @@
         <!-- <label>หน่วยกิตรวม</label><input type="text" value="{{sum}}"><br> -->
         <input type="submit" class="btn default">
         <input type="text" name=""value="{{item}}" readonly>
-        <input type="text" name=""value="{{Grade}}" readonly>
+        <!-- <input type="text" name=""value="{{Grade}}" readonly> -->
         <!-- <input type="text" name=""value="" readonly> -->
     
     </form> 

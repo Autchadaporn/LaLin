@@ -54,7 +54,7 @@ def test():
 @app.route("/calendar")
 def calendar(): 
         cur = mysql.connection.cursor()
-        cur.execute("SELECT calendar.id, topic.Topic_ID, topic.Topic, calendar.Term, calendar.Start_Date, calendar.Finish_Date, calendar.Year FROM topic INNER JOIN calendar ON topic.Topic_ID = calendar.Topic_ID  ")
+        cur.execute("SELECT calendar.id, topic.Topic_ID, topic.Topic_Name, calendar.Term, calendar.Start_Date, calendar.Finish_Date, calendar.Year FROM topic INNER JOIN calendar ON topic.Topic_ID = calendar.Topic_ID  ")
         rows = cur.fetchall()
         return render_template('calendar.html',datas=rows)
 
@@ -109,7 +109,7 @@ def inserttopic():
     Topic = request.form['Topic']
     # print(Topic_ID,Topic)
     cur = mysql.connection.cursor()
-    cur.execute (" INSERT INTO topic (Topic_ID,Topic) VALUES (%s,%s)",(Topic_ID,Topic)) #เพิ่มห้อข้อกิจกรรมลงในตารางTopic
+    cur.execute (" INSERT INTO topic (Topic_ID,Topic) VALUES (%s,%s)",(Topic_ID,Topic_Name)) #เพิ่มห้อข้อกิจกรรมลงในตารางTopic
     # print(cur)
     # cur.execute(cur)
     mysql.connection.commit()
