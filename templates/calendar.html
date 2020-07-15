@@ -13,12 +13,13 @@
   <!-- เริ่มค้นหาข้อมูล -->
   <form action ="/search" method="POST">
     <label>ค้นหา</label>
-    <select name="Topic">
-        <option value="1">เปิดเทอม</option>
-        <option value="2">สอบกลางภาค</option>
-        <option value="3">สอบกลางภาค</option>
-        <option value="4">ปิดเทอม</option>
+    
+    <select name="Topic_ID">
+        {% for row in topic %}
+        <option value="{{row.Topic_ID}}">{{row.Topic_Name}}</option>
+        {% endfor %}
     </select>
+
     <select name="Term">
         <option value="1">เทอม1</option>
         <option value="2">เทอม2</option>
@@ -47,7 +48,7 @@
             <!-- <td style="display:none;">{{row.id}}</td>  -->
             <!-- style="display:none;ไม่แสดง id  -->
             <td>{{row.Topic_ID}}</td>
-            <td>{{row.Topic}}</td>
+            <td>{{row.Topic_Name}}</td>
             <td>{{row.Term}}</td>
             <td>{{row.Start_Date}}</td>
             <td>{{row.Finish_Date}}</td>

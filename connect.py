@@ -54,9 +54,13 @@ def test():
 @app.route("/calendar")
 def calendar(): 
         cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM topic")
+        topic=cur.fetchall()
+
+        cur = mysql.connection.cursor()
         cur.execute("SELECT calendar.id, topic.Topic_ID, topic.Topic_Name, calendar.Term, calendar.Start_Date, calendar.Finish_Date, calendar.Year FROM topic INNER JOIN calendar ON topic.Topic_ID = calendar.Topic_ID  ")
         rows = cur.fetchall()
-        return render_template('calendar.html',datas=rows)
+        return render_template('calendar.html',datas=rows,topic=topic)
 
 @app.route("/formsearch")
 def formsearch():
@@ -65,11 +69,13 @@ def formsearch():
 # ค้นหา
 @app.route("/search" ,methods=['GET', 'POST'])
 def search():
-    Topic =  request.form['Topic']
+    
+
+    Topic_ID = request.form['Topic_ID']
     Term =  request.form['Term']
     # print(Topic,Term)
     cur = mysql.connection.cursor() #เชื่อมdatabase
-    cur.execute("SELECT Start_Date,Finish_Date FROM calendar WHERE Topic_ID = '"+Topic+"' AND Term = '"+Term+"'")
+    cur.execute("SELECT Start_Date,Finish_Date FROM calendar WHERE Topic_ID = '"+Topic_ID+"' AND Term = '"+Term+"'")
     rows=cur.fetchall() #แสดงข้อมูลทั้งหมด
     return render_template('search.html',datas = rows)
 
@@ -93,7 +99,10 @@ def addcalendar():
         Finish_Date = request.form['Finish_Date']
         Term = request.form['Term']
         Year = request.form['Year']
+        # print('*********************************')
         # print(Topic_ID,Start_Date,Finish_Date,Term,Year)
+        # print('*********************************')
+
         cur.execute("INSERT INTO calendar (Topic_ID,Term,Start_Date,Finish_Date,Year) VALUES (%s,%s,%s,%s,%s)",(Topic_ID,Term,Start_Date,Finish_Date,Year))
         
         mysql.connection.commit()
@@ -185,14 +194,14 @@ def calculate():
         for _x,_i in enumerate(i): 
             items[_x][headers[x]] = _i
     result = jsonify(items)
-    print("---------------------------------------------------")
-    print(result)
-    print(items)
+    #print("---------------------------------------------------")
+    # print(result)
+    # print(items)
     
     # rows = json.dumps(items)
     rows=items
     print(rows)
-    print("---------------------------------------------------")
+    #print("---------------------------------------------------")
     # -------------------- stop  ส่งค่าแล้วprintออกมาเป็นjson-----------------------
 
 #     rows = [
@@ -231,11 +240,11 @@ def calculate():
 
    
 
-    print("***********************************************************************")
-    print('วิชา:',Subject_ID)
-    print('หน่วยกิต:',Unit)
-    print('เกรด:',Grade)
-    print("***********************************************************************")
+    # print("***********************************************************************")
+    # print('วิชา:',Subject_ID)
+    # print('หน่วยกิต:',Unit)
+    # print('เกรด:',Grade)
+    # print("***********************************************************************")
     
     #------------------------- start เช็ค W ---------------------------
     for i in range(len(Grade)): #วนลูปเช็คว่ามี W ไหม
@@ -276,25 +285,7 @@ def calculate():
     GPA = total / sum
     GPA = '%.2f'%(GPA) # ตัดทศนิยมให้เหลือ 2 ตำแหน่ง เช่น 2.9642857142857144 เป็น 2.96
     print(GPA)
-    print(Grade)
-    for i in Grade:
-        print(i)
-        # if i == '4.0':
-        #     print ('A')
-        # if i == '3.5':
-        #     print ('B+')
-        # if i == '3.0':
-        #     print ('B')
-        # if i == '2.5':
-        #     print ('C+')
-        # if i == '2.0':
-        #     print ('C')
-        # if i == '1.5':
-        #     print('D+')
-        # if i == '1.0':
-        #     print('D')
-        # if i == '0.0':
-        #     print('F')
+    #print(Grade)
 
     return render_template("calculate.html",datas=rows,item=GPA,Grade=Grade)
     # return redirect(url_for('index',item=GPA,Grade=Grade))

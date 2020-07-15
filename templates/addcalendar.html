@@ -15,7 +15,7 @@
     <form action="/addcalendar" method="POST">
     <select name="Topic_ID">
             {% for row in datas %}
-          <option value="{{row.Topic_ID}}">{{row.Topic}}</option>
+          <option value="{{row.Topic_ID}}">{{row.Topic_Name}}</option>
             {% endfor %}
     </select>
     <a class="btn btn-secondary btn-sm" href="/addtopic">เพิ่มกิจกรรม</a><br>

@@ -7,12 +7,18 @@
 <body>
     <form action ="/search" method="POST">
         
-        <select name="Topic">
+        <select name="Topic_ID">
+            {% for row in datas %}
+            <option value="{{row.Topic_ID}}">{{row.Topic_Name}}</option>
+            {% endfor %}
+        </select>
+        
+        <!-- <select name="Topic_ID">
             <option value="1">เปิดเทอม</option>
             <option value="2">สอบกลางภาค</option>
             <option value="3">สอบกลางภาค</option>
             <option value="4">ปิดเทอม</option>
-        </select>
+        </select> -->
         <select name="Term">
             <option value="1">เทอม1</option>
             <option value="2">เทอม2</option>
