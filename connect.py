@@ -6,13 +6,22 @@ import bcrypt
 # Start connect DB
 app = Flask(__name__)
 
-app.config['MYSQL_USER']='root'
-app.config['MYSQL_PASSWORD']=''
-app.config['MYSQL_HOST']='localhost'
-app.config['MYSQL_DB']='lalin'
+app.config['MYSQL_USER'] = 'bd4af09ac951ca'
+app.config['MYSQL_PASSWORD'] = 'd8aa84d9'
+app.config['MYSQL_DB'] = 'heroku_72b40bcb73f0bad'
+app.config['MYSQL_HOST'] = 'us-cdbr-east-02.cleardb.com'
 app.config['MYSQL_CURSORCLASS']='DictCursor'
-# Stop connect
+
+
+# app.config['MYSQL_USER']='root'
+# app.config['MYSQL_PASSWORD']=''
+# app.config['MYSQL_HOST']='localhost'
+# app.config['MYSQL_DB']='lalin'
+# app.config['MYSQL_CURSORCLASS']='DictCursor'
 mysql = MySQL(app)
+
+# Stop connect
+
 
 # ----------------start login -------------#
 @app.route("/login")
