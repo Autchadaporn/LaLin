@@ -115,7 +115,7 @@ def addcalendar():
         cur.execute("INSERT INTO calendar (Topic_ID,Term,Start_Date,Finish_Date,Year) VALUES (%s,%s,%s,%s,%s)",(Topic_ID,Term,Start_Date,Finish_Date,Year))
         
         mysql.connection.commit()
-    return redirect(url_for('showform'))
+    return redirect(url_for('calendar'))
 
 # เพิ่มหัวข้อกิจกรรม
 @app.route("/addtopic")
@@ -131,14 +131,14 @@ def inserttopic():
     # print(cur)
     # cur.execute(cur)
     mysql.connection.commit()
-    return redirect(url_for('calendar'))
+    return redirect(url_for('showform'))
 
 #ลบแถว
-@app.route("/delete/<string:id>",methods=["POST","GET"])
+@app.route("/delete/<string:id>",methods=["GET","POST"])
 def delete(id):
     # print(id)
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM calendar WHERE id=%s",(id)) #เลือกลบข้อมูลที่มีค่าเท่ากับ id รับค่ามาจาก หน้า calendar
+    cur.execute("DELETE FROM calendar WHERE id="+id+" ") #เลือกลบข้อมูลที่มีค่าเท่ากับ id รับค่ามาจาก หน้า calendar
     mysql.connection.commit()
     return redirect(url_for('calendar'))
 
