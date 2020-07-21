@@ -115,7 +115,7 @@ def addcalendar():
         cur.execute("INSERT INTO calendar (Topic_ID,Term,Start_Date,Finish_Date,Year) VALUES (%s,%s,%s,%s,%s)",(Topic_ID,Term,Start_Date,Finish_Date,Year))
         
         mysql.connection.commit()
-    return redirect(url_for('calendar'))
+    return redirect(url_for('showform'))
 
 # เพิ่มหัวข้อกิจกรรม
 @app.route("/addtopic")
@@ -124,14 +124,14 @@ def addtopic():
 @app.route("/inserttopic",methods=["POST"])
 def inserttopic():
     Topic_ID = request.form['Topic_ID']
-    Topic = request.form['Topic']
+    Topic_Name = request.form['Topic_Name']
     # print(Topic_ID,Topic)
     cur = mysql.connection.cursor()
-    cur.execute (" INSERT INTO topic (Topic_ID,Topic) VALUES (%s,%s)",(Topic_ID,Topic_Name)) #เพิ่มห้อข้อกิจกรรมลงในตารางTopic
+    cur.execute (" INSERT INTO topic (Topic_ID,Topic_Name) VALUES (%s,%s)",(Topic_ID,Topic_Name)) #เพิ่มห้อข้อกิจกรรมลงในตารางTopic
     # print(cur)
     # cur.execute(cur)
     mysql.connection.commit()
-    return render_template('addtopic.html')
+    return redirect(url_for('calendar'))
 
 #ลบแถว
 @app.route("/delete/<string:id>",methods=["POST","GET"])
